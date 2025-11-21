@@ -5,6 +5,8 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 from flask import Flask, send_from_directory
 from flask_cors import CORS
+from flask_migrate import Migrate
+from flask_jwt_extended import JWTManager
 from src.models.user import db
 from src.models.customer import Customer, CustomerActivity, CSMAction
 from src.models.playbook import Playbook, PlaybookStep, PlaybookExecution, StepExecution
@@ -14,10 +16,23 @@ from src.routes.playbooks import playbooks_bp
 from src.routes.integrations import integrations_bp
 
 app = Flask(__name__, static_folder=os.path.join(os.path.dirname(__file__), 'static'))
-app.config['SECRET_KEY'] = 'virtual-csm-secret-key-2024'
+
+# Load configuration
+from config import get_config
+app.config.from_object(get_config())
+
+# Fallback for development
+if not app.config.get('SECRET_KEY'):
+    app.config['SECRET_KEY'] = 'virtual-csm-secret-key-2024'
 
 # Enable CORS for all routes
-CORS(app, origins="*")
+CORS(app, origins=app.config.get('CORS_ORIGINS', ['*']))
+
+# Initialize Flask-Migrate for database migrations
+migrate = Migrate(app, db)
+
+# Initialize JWT for authentication
+jwt = JWTManager(app)
 
 app.register_blueprint(user_bp, url_prefix='/api')
 app.register_blueprint(customers_bp, url_prefix='/api')
@@ -25,7 +40,9 @@ app.register_blueprint(playbooks_bp, url_prefix='/api')
 app.register_blueprint(integrations_bp, url_prefix='/api')
 
 # uncomment if you need to use database
-app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', 'app.db')}"
+# Use DATABASE_URL from config, fallback to SQLite
+if not app.config.get('SQLALCHEMY_DATABASE_URI'):
+    app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', 'app.db')}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 with app.app_context():

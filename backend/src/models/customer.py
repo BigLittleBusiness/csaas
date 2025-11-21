@@ -8,6 +8,7 @@ class Customer(db.Model):
     __tablename__ = 'customers'
     
     id = db.Column(db.Integer, primary_key=True)
+    organization_id = db.Column(db.Integer, db.ForeignKey('organizations.id'), nullable=False, index=True)
     external_id = db.Column(db.String(100), unique=True, nullable=False)  # ID from external system
     name = db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(200), nullable=False)
