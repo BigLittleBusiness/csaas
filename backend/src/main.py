@@ -14,6 +14,8 @@ from src.routes.user import user_bp
 from src.routes.customers import customers_bp
 from src.routes.playbooks import playbooks_bp
 from src.routes.integrations import integrations_bp
+from src.routes.admin import admin_bp
+from src.routes.billing import billing_bp
 
 app = Flask(__name__, static_folder=os.path.join(os.path.dirname(__file__), 'static'))
 
@@ -38,6 +40,8 @@ app.register_blueprint(user_bp, url_prefix='/api')
 app.register_blueprint(customers_bp, url_prefix='/api')
 app.register_blueprint(playbooks_bp, url_prefix='/api')
 app.register_blueprint(integrations_bp, url_prefix='/api')
+app.register_blueprint(admin_bp)
+app.register_blueprint(billing_bp)
 
 # uncomment if you need to use database
 # Use DATABASE_URL from config, fallback to SQLite
