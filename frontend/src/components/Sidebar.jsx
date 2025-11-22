@@ -10,7 +10,8 @@ import {
   Shield,
   Building2,
   LogOut,
-  ChevronDown
+  ChevronDown,
+  FileText
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -52,6 +53,8 @@ export default function Sidebar({ isOpen, onToggle }) {
     { name: 'Admin Dashboard', href: '/admin/dashboard', icon: Shield },
     { name: 'User Management', href: '/admin/users', icon: Users },
     { name: 'Organization', href: '/admin/organization', icon: Building2 },
+    { name: 'Analytics', href: '/admin/analytics', icon: LayoutDashboard },
+    { name: 'Audit Log', href: '/admin/audit-log', icon: FileText },
   ]
 
   return (

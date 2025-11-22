@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Users, Building2, TrendingUp, Activity } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { SkeletonCard, SkeletonStat } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { api } from '@/services/api';
 
@@ -28,8 +29,22 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-[#64748B]">Loading dashboard...</div>
+      <div className="space-y-6">
+        <div>
+          <div className="h-9 w-64 bg-[#E2E8F0] animate-pulse rounded mb-2"></div>
+          <div className="h-5 w-96 bg-[#E2E8F0] animate-pulse rounded"></div>
+        </div>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <SkeletonStat />
+          <SkeletonStat />
+          <SkeletonStat />
+          <SkeletonStat />
+        </div>
+        <div className="grid gap-6 md:grid-cols-2">
+          <SkeletonCard />
+          <SkeletonCard />
+        </div>
+        <SkeletonCard />
       </div>
     );
   }

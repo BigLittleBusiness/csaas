@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { SkeletonForm, SkeletonCard } from '@/components/ui/skeleton';
 import { api } from '@/services/api';
 import { useToast } from '@/hooks/use-toast';
 
@@ -96,8 +97,22 @@ export default function UserDetail() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-[#64748B]">Loading user details...</div>
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <div className="h-10 w-24 bg-[#E2E8F0] animate-pulse rounded"></div>
+          <div>
+            <div className="h-9 w-48 bg-[#E2E8F0] animate-pulse rounded mb-2"></div>
+            <div className="h-5 w-64 bg-[#E2E8F0] animate-pulse rounded"></div>
+          </div>
+        </div>
+        <div className="grid gap-6 md:grid-cols-3">
+          <div className="md:col-span-2 rounded-xl border border-[#E2E8F0] bg-white p-6">
+            <div className="h-6 w-48 bg-[#E2E8F0] animate-pulse rounded mb-2"></div>
+            <div className="h-4 w-64 bg-[#E2E8F0] animate-pulse rounded mb-6"></div>
+            <SkeletonForm />
+          </div>
+          <SkeletonCard />
+        </div>
       </div>
     );
   }
